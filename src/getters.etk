@@ -1,94 +1,182 @@
+# Getter macros
+# ---
+#
+# Naming convention: 
+#	- get_* prefix returns the element onto the stack
+#	- ptr_* prefix returns the element's ptr onto the stack
+
+%macro get_header_start()
+	push1 0xe0
+%end
+
 %macro get_parent_hash()
 	push1 0x20
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_coinbase()
 	push1 0x40
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_state_root()
 	push1 0x60
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_receipt_root()
 	push1 0x80
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_block_number()
 	push1 0xc0
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_gas_used()
 	push1 0xe0
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_time()
 	push2 0x0100
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_base_fee()
 	push2 0x0120
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_type()
 	push2 0x0140
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_chain_id()
 	push2 0x0160
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_nonce()
 	push2 0x0180
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_gas_tip_cap()
 	push2 0x01a0
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_gas_fee_cap()
 	push2 0x01c0
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_gas_limit()
 	push2 0x01e0
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_to()
 	push2 0x0200
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_value()
 	push2 0x0220
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_y_parity()
 	push2 0x0240
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_r()
 	push2 0x0260
+	push1 0xe0
+	add
 	mload
 %end
 
 %macro get_tx_s()
 	push2 0x0280
+	push1 0xe0
+	add
 	mload
+%end
+
+%macro get_data_len()
+	push2 0x02a0
+	push1 0xe0
+	add
+	mload
+%end
+
+%macro get_proof_len()
+	push2 0x02c0
+	push1 0xe0
+	add
+	mload
+%end
+
+%macro get_pc()
+	push1 0x00
+	mload
+%end
+
+%macro ptr_current_code()
+	push1 0xa0
+	mload
+%end
+
+############
+# POINTERS #
+############
+%macro ptr_current_gas_left()
+	push1 0x20
+%end
+
+%macro ptr_tx_origin()
+	push1 0x80
+%end
+
+%macro ptr_frame()
+	push1 0xc0
 %end
