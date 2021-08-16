@@ -1,0 +1,60 @@
+# The committer should provide calldata as follows:
+# 
+#  0  0x0000 +--------------+    
+#            | Selector     |
+#  1  0x0020 +--------------+ 
+#            | Parent hash  |   ---+ 
+#  2  0x0040 +--------------+      |
+#            | Coinbase     |      |
+#  3  0x0060 +--------------+      |
+#            | State root   |      |
+#  4  0x0080 +--------------+      |
+#            | Receipt root |      |
+#  5  0x00a0 +--------------+      |
+#            | Bloom        |      |--- header fields
+#  6  0x00c0 +--------------+      |
+#            | Number       |      |
+#  7  0x00e0 +--------------+      |
+#            | Gas used     |      |
+#  8  0x0100 +--------------+      |
+#            | Time         |      |
+#  9  0x0120 +--------------+      |
+#            | Base fee     |   ---+
+# 10  0x0140 +--------------+   
+#            | Tx type      |   ---+
+# 11  0x0160 +--------------+      |
+#            | Chain ID     |      |  
+# 12  0x0180 +--------------+      |
+#            | Nonce        |      |
+# 13  0x01a0 +--------------+      |
+#            | Gas tip cap  |      |
+# 14  0x01c0 +--------------+      |
+#            | Gas fee cap  |      |
+# 15  0x01e0 +--------------+      |
+#            | Gas limit    |      |
+# 16  0x0200 +--------------+      |
+#            | To           |      |
+# 17  0x0220 +--------------+      |--- transaction fields
+#            | Value        |      |
+# 18  0x0204 +--------------+      |
+#            | Y parity     |      |
+# 19  0x0260 +--------------+      |
+#            | R            |      |
+# 20  0x0280 +--------------+      |
+#            | S            |      |
+# 21  0x02a0 +--------------+      |
+#            | Data length  |      |
+# 22  0x02c0 +--------------+      |
+#            | Proof length |      |
+# 23  0x02e0 +--------------+      |
+#            | Data         |      |
+# 24  0x???? +--------------+      |
+#            | Proof        |   ---+
+# 25  0x???? +--------------+
+#
+#
+# # Storing for later
+# The ORU contract stores the following mappings:
+#
+# Block hash   -> block number
+# Block number -> state root
