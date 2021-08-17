@@ -177,6 +177,11 @@
 	push1 0x80
 %end
 
+%macro ptr_frame_ptr()
+	push1 0xc0
+%end
+
 %macro ptr_frame()
 	push1 0xc0
+	mload
 %end

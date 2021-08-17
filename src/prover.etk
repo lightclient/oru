@@ -157,6 +157,14 @@ mstore				# []
 caller				# [fake_origin]
 %ptr_tx_origin()		# [tx_origin_ptr, fake_origin]
 mstore				# []
+
+# set frame ptr
+calldatasize			# [calldatasize]
+push1 0xc0			# [constant_size, calldatasize]
+add				# [frame_ptr]
+%ptr_frame_ptr()		# [ptr_frame_ptr, frame_ptr]
+mstore
+
 ###############################################################################
 
 # Initialize first EVM frame from tx inputs
@@ -193,11 +201,16 @@ mstore				# []
 
 # Set code.ptr
 %get_data_len()			# [data_len]
-push2 0x02e0			# [data_offset, data_len]
-add				# [code_ptr]
-%ptr_frame()			# [ptr_frame, code_ptr]
-push1 0xc0			# [0xc0, ptr_frame, code_ptr]
-add				# [ptr_frame_code_ptr, code_ptr]
+push2 0x02e0			# [data_header_ost, data_len]
+push1 0xe0			# [header_ost, data_ost, data_len]
+add				# [data_ost, data_len]
+add				# [ptr_code]
+dup1				# [ptr_code]
+%ptr_frame()			# [ptr_frame, ptr_code, ptr_code]
+push1 0xc0			# [0xc0, ptr_frame, ptr_code, ptr_code]
+add				# [ptr_frame_code_ptr, ptr_code, ptr_code]
+mstore				# [ptr_code]
+push1 0xa0			# [ptr_code_ptr, ptr_code]
 mstore				# []
 
 # Set code.len
@@ -217,33 +230,37 @@ mstore				# []
 %end
 
 interpreter_loop:
+	jumpdest
 	push1 0x00		# [pc_ptr]
 	mload			# [pc]
 
-	push1 0xa0		# [code_ptr, pc]
+	push1 0xa0		# [ptr_code_ptr, pc]
+	mload			# [code_ptr, pc]
 	add			# [op_ptr]
 	mload			# [dirty_op]
 
-	push32 0xff00000000000000000000000000000000000000000000000000000000000000 # [mask, dirty_op]
-	and			# [op]
+	push1 248		# [mask, dirty_op]
+	shr			# [op]
 
 	# Stupid jump table for now
 	dup1			# [op, op]
 	push1 0x60		# [push1, op, op]
 	eq			# [is_push1, op]
-	push1 op_push1		# [impl, is_push1, op]
+	push2 op_push1		# [impl, is_push1, op]
 	jumpi			# [op]
 
 	dup1			# [op, op]
 	push1 0x01		# [add, op, op]
 	eq			# [is_add, op]
-	push1 op_add		# [impl, is_add, op]
+	push2 op_add		# [impl, is_add, op]
+	jumpi			# [op]
 
 	stop
 
 
 # Instruction impls
 op_push1:
+	jumpdest
 	pop
 	%get_pc()		# [pc]
 	%ptr_current_code()	# [ptr_code, pc]
@@ -251,14 +268,15 @@ op_push1:
 	push1 0x01		# [0x01, ptr_op]
 	add			# [ptr_operand]
 	mload			# [dirty_operand]
-	push32 0xff00000000000000000000000000000000000000000000000000000000000000 # [mask, dirty_operand]
-	and			# [operand]
+	push1 248		# [mask, dirty_operand]
+	shr			# [operand]
 
 	%increment_pc(2)
 	push2 interpreter_loop
 	jump 
 	
 op_add:
+	jumpdest
 	pop
 	add
 	%increment_pc(1)

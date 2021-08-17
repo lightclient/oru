@@ -42,6 +42,8 @@ def get_t8n_input(asm):
     data['alloc']['0x095e7baea6a6c7c4c2dfeb977efac326af552d87']['code'] = f"0x{asm}"
     data['txs'][0]['input'] = f"0x{build_input()}"
 
+    print(data)
+
     return data
 
 
@@ -64,26 +66,26 @@ def run_traceview():
 def build_input():
     data = {
         'selector': ZERO,
-        'parent_hash': ZERO,
-        'coinbase': ZERO,
-        'state_root': ZERO,
-        'receipt_root': ZERO,
-        'bloom': ZERO,
-        'number': ZERO,
-        'gas_used': ZERO,
-        'time': ZERO,
-        'base_fee': ZERO,
-        'tx_type': ZERO,
-        'chain_id': ZERO,
-        'nonce': ZERO,
-        'gas_tip_cap': ZERO,
-        'gas_fee_cap': ZERO,
-        'gas_limit': ZERO,
-        'to': ZERO,
-        'value': ZERO,
-        'y_parity': ZERO,
-        'r': ZERO,
-        's': ZERO,
+        'parent_hash': fill32('01'),
+        'coinbase': fill32('02'),
+        'state_root': fill32('03'),
+        'receipt_root': fill32('04'),
+        'bloom': fill32('05'),
+        'number': fill32('06'),
+        'gas_used': fill32('07'),
+        'time': fill32('08'),
+        'base_fee': fill32('09'),
+        'tx_type': fill32('10'),
+        'chain_id': fill32('11'),
+        'nonce': fill32('12'),
+        'gas_tip_cap': fill32('13'),
+        'gas_fee_cap': fill32('14'),
+        'gas_limit': fill32('15'),
+        'to': fill32('16'),
+        'value': fill32('17'),
+        'y_parity': fill32('18'),
+        'r': fill32('19'),
+        's': fill32('20'),
         'data_len': ZERO,
         'proof_len': pad32('05'),
         'data': '',
@@ -98,6 +100,11 @@ def build_input():
 
 
 def pad32(val):
+    return val.zfill(64)
+
+def fill32(val):
+    return val*32
+
     return val.zfill(64)
 
 if __name__=="__main__":
