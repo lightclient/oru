@@ -133,7 +133,7 @@
 # ...
 #
 
-%include("getters.etk")
+%import("getters.etk")
 
 # TODO: authenticate input
 # TODO: static validation
