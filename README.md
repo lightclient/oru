@@ -1,3 +1,3 @@
 # oru.etk
 
-An optimist rollup written in EVM assembly.
+An optimistic rollup written in EVM assembly.
